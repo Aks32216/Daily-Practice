@@ -1,0 +1,6 @@
+Name : amish
+Your Credit Limit is : 50000
+Your Current loan amount is : 0
+Your Phone Number is : 2345
+Enter Your New Name: 
+Enter your New Phone No. 
