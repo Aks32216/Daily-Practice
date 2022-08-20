@@ -40,25 +40,53 @@ using namespace std;
 #define BRAHAMASTRA ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 #define ull unsigned long long int
 
-int t[101][101];
-int solve(vector<int>& a,int i,int j)
+
+/*
+    in loop cost to cut is (cuts[j+1]-cuts[i-1]) + solve(left recursive) + solve(right recursive)
+    in start apend 0 and n because those are the length of the stick at start and end side
+
+*/
+
+int solve(int i,int j,vector<int>& cuts,vector<vector<int> >& dp)
 {
-    if(i>=j)
-        return t[i][j]=0;
-    if(t[i][j]!=-1)
-        return t[i][j];
-    int res=INT_MAX;
-    for(int k=i;k<=j-1;++k)
-    {
-        int temp=solve(a,i,k)+solve(a,k+1,j)+a[i-1]*a[k]*a[j];
-        res=min(res,temp);
-    }
-    return t[i][j]=res;;
+	if(i>j)
+		return 0;
+	if(dp[i][j]!=-1)
+		return dp[i][j];
+	int minVal=1e9;
+	for(int idx=i;idx<=j;++idx)
+	{
+		int val=(cuts[j+1]-cuts[i-1])+solve(i,idx-1,cuts,dp)+solve(idx+1,j,cuts,dp);
+		minVal=min(minVal,val);
+	}
+	return dp[i][j]=minVal;
 }
-int matrixMultiplication(int N, vector<int> arr)
-{
-    memset(t,-1,sizeof(t));
-    return solve(arr,1,N-1);
+
+int minCost(int n, vector<int>& cuts) {
+	int m=cuts.size();
+	cuts.insert(begin(cuts),0);
+	cuts.push_back(n);
+	sort(begin(cuts),end(cuts));
+    // vector<vector<int> > dp(m+1,vector<int>(m+1,-1));
+    // return solve(1,m,cuts,dp);
+
+	vector<vector<int> > dp(m+2,vector<int>(m+2,0));
+	for(int i=m;i>=1;--i)
+	{
+		for(int j=1;j<=m;++j)
+		{
+			if(i>j)
+				continue;
+			int minVal=1e9;
+			for(int idx=i;idx<=j;++idx)
+			{
+				int val=(cuts[j+1]-cuts[i-1])+dp[i][idx-1]+dp[idx+1][j];
+				minVal=min(minVal,val);
+			}
+			dp[i][j]=minVal;
+		}
+	}
+	return dp[1][m];
 }
  
 int main()
@@ -72,9 +100,10 @@ int main()
 
        int n;
        cin>>n;
-       vi v(n);
+       int c;
+       cin>>c;
+       vector<int> v(c);
        for(auto& i:v)
        		cin>>i;
-       	cout<<matrixMultiplication(n,v);
-
+       cout<<minCost(n,v)<<"\n";
 }

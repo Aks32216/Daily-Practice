@@ -40,25 +40,27 @@ using namespace std;
 #define BRAHAMASTRA ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 #define ull unsigned long long int
 
-int t[101][101];
-int solve(vector<int>& a,int i,int j)
+int matrixMultiplication(int N, int arr[])
 {
-    if(i>=j)
-        return t[i][j]=0;
-    if(t[i][j]!=-1)
-        return t[i][j];
-    int res=INT_MAX;
-    for(int k=i;k<=j-1;++k)
-    {
-        int temp=solve(a,i,k)+solve(a,k+1,j)+a[i-1]*a[k]*a[j];
-        res=min(res,temp);
-    }
-    return t[i][j]=res;;
-}
-int matrixMultiplication(int N, vector<int> arr)
-{
-    memset(t,-1,sizeof(t));
-    return solve(arr,1,N-1);
+	vector<vector<int> > dp(N,vector<int>(N));
+	for(int i=1;i<N;++i)
+	{
+		dp[i][i]=0;
+	}
+	for(int i=N-1;i>=1;--i)
+	{
+		for(int j=i+1;j<N;++j)
+		{
+			int minSteps=1e9;
+			for(int k=i;k<j;++k)
+			{
+				int steps=arr[i-1]*arr[k]*arr[j]+dp[i][k]+dp[k+1][j];
+				minSteps=min(minSteps,steps);
+			}
+			dp[i][j]=minSteps;
+		}
+	}
+	return dp[1][N-1];
 }
  
 int main()
@@ -72,9 +74,8 @@ int main()
 
        int n;
        cin>>n;
-       vi v(n);
-       for(auto& i:v)
-       		cin>>i;
-       	cout<<matrixMultiplication(n,v);
-
+       int arr[n];
+       for(int i=0;i<n;++i)
+       		cin>>arr[i];
+       cout<<matrixMultiplication(n,arr)<<"\n";
 }

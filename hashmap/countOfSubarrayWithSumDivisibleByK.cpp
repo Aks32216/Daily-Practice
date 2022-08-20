@@ -40,25 +40,25 @@ using namespace std;
 #define BRAHAMASTRA ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 #define ull unsigned long long int
 
-int t[101][101];
-int solve(vector<int>& a,int i,int j)
-{
-    if(i>=j)
-        return t[i][j]=0;
-    if(t[i][j]!=-1)
-        return t[i][j];
-    int res=INT_MAX;
-    for(int k=i;k<=j-1;++k)
-    {
-        int temp=solve(a,i,k)+solve(a,k+1,j)+a[i-1]*a[k]*a[j];
-        res=min(res,temp);
-    }
-    return t[i][j]=res;;
-}
-int matrixMultiplication(int N, vector<int> arr)
-{
-    memset(t,-1,sizeof(t));
-    return solve(arr,1,N-1);
+int subarraysDivByK(vector<int>& nums, int k) {
+	int sum=0;
+	unordered_map<int,int> mp;
+	mp[sum]++;
+	for(int i=0;i<nums.size();++i)
+	{
+		sum+=nums[i];
+		int mod=sum%k;
+		if(mod<0)
+			mod+=k;
+		mp[mod]++;
+	}
+	int count=0;
+	for(auto i:mp)
+	{
+		int temp=i.second;
+		count+=(temp*(temp-1))/2;
+	}
+	return count;
 }
  
 int main()
@@ -70,11 +70,10 @@ int main()
  
        BRAHAMASTRA
 
-       int n;
-       cin>>n;
-       vi v(n);
+       int n,k;
+       cin>>n>>k;
+       vector<int> v(n);
        for(auto& i:v)
        		cin>>i;
-       	cout<<matrixMultiplication(n,v);
-
+       cout<<subarraysDivByK(v,k)<<"\n";
 }

@@ -39,28 +39,23 @@ using namespace std;
 #define castl static_cast<ll>
 #define BRAHAMASTRA ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 #define ull unsigned long long int
-
-int t[101][101];
-int solve(vector<int>& a,int i,int j)
-{
-    if(i>=j)
-        return t[i][j]=0;
-    if(t[i][j]!=-1)
-        return t[i][j];
-    int res=INT_MAX;
-    for(int k=i;k<=j-1;++k)
-    {
-        int temp=solve(a,i,k)+solve(a,k+1,j)+a[i-1]*a[k]*a[j];
-        res=min(res,temp);
-    }
-    return t[i][j]=res;;
-}
-int matrixMultiplication(int N, vector<int> arr)
-{
-    memset(t,-1,sizeof(t));
-    return solve(arr,1,N-1);
-}
  
+int subarraySum(vector<int>& nums, int k) {
+	int sum=0;
+	int count=0;
+	unordered_map<int,int> mp;
+	for(int i=0;i<nums.size();++i)
+	{
+		sum+=nums[i];
+		if(sum==k)
+			count++;
+		if(mp.find(sum-k)!=mp.end())
+			count+=mp[sum-k];
+		mp[sum]++;
+	}
+	return count;
+}
+
 int main()
 {
        #ifndef ONLINE_JUDGE
@@ -70,11 +65,10 @@ int main()
  
        BRAHAMASTRA
 
-       int n;
-       cin>>n;
-       vi v(n);
+       int n,k;
+       cin>>n>>k;
+       vector<int> v(n);
        for(auto& i:v)
        		cin>>i;
-       	cout<<matrixMultiplication(n,v);
-
+       cout<<subarraySum(v,k)<<"\n";
 }
