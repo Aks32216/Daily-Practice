@@ -1,12 +1,4 @@
-#include <iostream>
-#include <iomanip>
-#include <cstdlib>
-#include <cmath>
-#include <map>
-#include <string.h>
-#include <algorithm>
 #include <bits/stdc++.h>
-#include <vector>
  
 using namespace std;
 #define set_precision cout << fixed << setprecision(10)
@@ -39,33 +31,22 @@ using namespace std;
 #define castl static_cast<ll>
 #define BRAHAMASTRA ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 #define ull unsigned long long int
+#define mod 1e9+7
+
+int peakIndexInMountainArray(vector<int>& arr) {
+	int start=0,end=arr.size()-1;
+	while(start<=end){
+		int mid=start+(end-start)/2;
+		if(arr[mid]>arr[mid-1] && arr[mid]>arr[mid+1])
+			return mid;
+		else if(arr[mid]<arr[mid+1])
+			start=mid+1;
+		else
+			end=mid;
+	}
+	return -1;
+}
  
-bool isCycle(int node,vector<bool>& visited,vector<bool>& pathVisited,vector<int> adj[]){
-    visited[node]=true;
-    pathVisited[node]=true;
-    for(auto child:adj[node]){
-        if(visited[child]==false){
-            if(isCycle(child,visited,pathVisited,adj)==true)
-            return true;
-        }else if(pathVisited[child]==true)
-            return true;
-    }
-    pathVisited[node]=false;
-    return false;
-}
-
-bool isCyclic(int V, vector<int> adj[]) {
-    vector<bool> visited(V,false);
-    vector<bool> pathVisited(V,false);
-    for(int i=0;i<V;++i){
-        if(visited[i]==false){
-            if(isCycle(i,visited,pathVisited,adj)==true)
-               return true;
-        }
-    }
-    return false;
-}
-
 int main()
 {
        #ifndef ONLINE_JUDGE
@@ -74,18 +55,12 @@ int main()
        #endif
  
        BRAHAMASTRA
-
-       int n,m;
-       cin>>n>>m;
-       vector<int> v[n];
-       int a,b;
-       for(int i=0;i<n;++i)
-       {
-       		cin>>a>>b;
-       		v[a].push_back(b);
-       }
-       if(isCyclic(n,v))
-       		cout<<"Graph contains cycle\n";
-       	else
-       		cout<<"Graph Does not contain cycle\n";
+ 
+ 	
+ 	int n;
+ 	cin>>n;
+ 	vector<int> v(n);
+ 	for(auto& i:v)
+ 		cin>>i;
+ 	cout<<peakIndexInMountainArray(v)<<"\n";
 }
