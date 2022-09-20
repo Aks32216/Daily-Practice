@@ -40,39 +40,62 @@ using namespace std;
 #define BRAHAMASTRA ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 #define ull unsigned long long int
  
-/*bool isPossible(vector<int>& nums,int mid,int target)
+/*
+int minSubArrayLen(int target, vector<int>& nums) {
+    // generate every subarray and return the minimum subarray size among all
+    int size=INT_MAX;
+    for(int i=0;i<nums.size();++i)
     {
-        int i;
         int sum=0;
-        for(i=0;i<mid;++i)
-            sum+=nums[i];
-        if(sum==target)
-            return true;
-        for(int i=mid;i<nums.size();++i)
+        for(int j=i;j<nums.size();++j)
         {
-            sum=sum+nums[i]-nums[i-mid];
+            sum+=nums[j];
             if(sum>=target)
-                return true;
-        }
-        return false;
-    }
-    
-    int minSubArrayLen(int target, vector<int>& nums) {
-        int start=0,end=nums.size();
-        int ans=0;
-        while(start<=end)
-        {
-            int mid=start+(end-start)/2;
-            if(isPossible(nums,mid,target))
             {
-                ans=mid;
-                end=mid-1;
+                size=min(size,j-i+1);
+                break;
             }
-            else
-                start=mid+1;
         }
-        return ans;
-    }*/
+    }
+    return size==INT_MAX?0:size;
+}
+
+
+bool isPossible(vector<int>& nums,int target,int subSize)
+{
+    int sum=0;
+    for(int i=0;i<subSize;++i)
+        sum+=nums[i];
+    if(sum>=target)
+        return true;
+    for(int i=subSize;i<nums.size();++i)
+    {
+        sum=sum+nums[i]-nums[i-subSize];
+        if(sum>=target)
+            return true;
+    }
+    return false;
+}
+
+int minSubArrayLen(int target,vector<int>& nums)
+{
+    // binary search over the subarray size as subarray size can range from 1-nums.size()
+    int start=1,end=nums.size();
+    int res=0;
+    while(start<=end)
+    {
+        int mid=start+(end-start)/2;
+        if(isPossible(nums,target,mid))
+        {
+            res=mid;
+            end=mid-1;
+        }
+        else
+            start=mid+1;
+    }
+    return res;
+}
+*/
 
 int minSubArrayLen(int target, vector<int>& nums) {
         int len=INT_MAX;
