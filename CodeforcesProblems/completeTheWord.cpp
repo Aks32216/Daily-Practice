@@ -40,6 +40,19 @@ using namespace std;
 #define BRAHAMASTRA ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 #define ull unsigned long long int
  
+int findNextZero(vector<int>& v)
+{
+    for(int i=0;i<v.size();++i)
+    {
+        if(v[i]==0)
+        {
+            v[i]=1;
+            return i;
+        }
+    }
+    return -1;
+}
+
 int main()
 {
        #ifndef ONLINE_JUDGE
@@ -49,5 +62,67 @@ int main()
  
        BRAHAMASTRA
 
-       
+       string s;
+       cin>>s;
+       int start=0,end=0;
+       unordered_map<char,int> mp;
+       while(end<s.length())
+       {
+            if(s[end]=='?')
+            {
+                if(end-start+1==26)
+                    break;
+                end++;
+                continue;
+            }
+            if(mp.find(s[end])==mp.end())
+            {
+                mp[s[end]]=end;
+                if(end-start+1==26)
+                    break;
+            }
+            else
+            {
+                if(mp[s[end]]<start)
+                {
+                    mp[s[end]]=end;
+                }
+                else
+                {
+                    start=mp[s[end]]+1;
+                    mp[s[end]]=end;
+                }
+                if(end-start+1==26)
+                    break;
+            }
+            end++;
+       }
+       if(end==s.length())
+       {
+            cout<<"-1\n";
+            exit(0);
+       }
+       // cout<<start<<" "<<end<<"\n";
+        vector<int> available(26,0);
+         for(int i=start;i<=end;++i)
+         {
+                if(s[i]=='?')
+                    continue;
+             available[s[i]-65]++;
+         }
+         for(int i=start;i<=end;++i)
+         {
+            
+             if(s[i]=='?')
+             {
+                 int j=findNextZero(available);       
+                 s[i]=65+j;
+             }
+         }
+         for(int i=0;i<s.length();++i)
+         {
+            if(s[i]=='?')
+                s[i]='A';
+         }
+         cout<<s<<"\n";
 }
