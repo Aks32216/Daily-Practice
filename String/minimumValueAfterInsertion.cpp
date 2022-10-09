@@ -32,37 +32,28 @@ using namespace std;
 #define BRAHAMASTRA ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 #define ull unsigned long long int
 #define mod 1e9+7
-
-int noOfOne(string s)
-{
-	int one=0;
-	for(int i=0;i<s.length();++i)
+ 
+string maxValue(string n, int x) {
+	string res;
+	bool isNeg=n[0]=='-'?true:false;
+	for(int i=0;i<n.length();++i)
 	{
-		if(s[i]=='1')
-			one++;
-	}
-	return one;
-}
-
-int numberOfBeams(vector<string>& bank) {
-	cout<<"executed\n";
-	int prev=-1;
-	int totalLaserBeam=0;
-	for(int i=0;i<bank.size();++i)
-	{
-		int count=noOfOne(bank[i]);
-		if(count==0)
+		if(n[i]=='-')
 			continue;
-		else
+		if(isNeg && (n[i]-48)>x)
 		{
-			if(prev!=-1)
-				totalLaserBeam+=prev*count;
-			prev=count;
+			res=n.substr(0,i)+to_string(x)+n.substr(i);
+			return res;
+		}
+		if(isNeg==false && (n[i]-48)<x)
+		{
+			res=n.substr(0,i)+to_string(x)+n.substr(i);
+			return res;
 		}
 	}
-	return totalLaserBeam;
+	return n+to_string(x);
 }
- 
+
 int main()
 {
        #ifndef ONLINE_JUDGE
@@ -72,10 +63,9 @@ int main()
  
        BRAHAMASTRA
  
- 	int n;
- 	cin>>n;
- 	vector<string> v(n);
- 	for(auto& i:v)
- 		cin>>i;
- 	cout<<numberOfBeams(v)<<"\n";
+ 	string s;
+ 	cin>>s;
+ 	int x;
+ 	cin>>x;
+ 	cout<<maxValue(s,x)<<"\n";
 }
