@@ -1,41 +1,39 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+
 class A{
 public:
+	A(){
+		cout<<"Constructor A\n";
+	}
 	virtual void show(){
-		cout<<"base\n";
+		cout<<"Base\n";
+	}
+	virtual ~A(){
+		cout<<"Destructor A\n";
 	}
 };
 
 class B:public A{
 public:
+	B(){
+		cout<<"Constructor B\n";
+	}
 	void show(){
 		cout<<"Derived\n";
 	}
-};
-
-class C:public A{
-public:
-	void display(){
-		cout<<"C derived\n";
+	~B(){
+		cout<<"Destructor B\n";
 	}
 };
 
-int main()
-{
+int main(){
 	#ifndef ONLINE_JUDGE
 		freopen("input.txt","r",stdin);
 		freopen("output.txt","w",stdout);
 	#endif
 
-	A a;
-	a.show();
-	B b;
-	b.show();
-
-	A* bptr;
-	C c;
-	bptr=&c;
-	bptr->show();
+	A* a=new B();
+	delete a;
 }

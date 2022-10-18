@@ -1,5 +1,5 @@
-9 + 8i
-0 + 0i
-0 + 0i
-0 + 0i
-9 + 8i
+A constructor
+B constructor
+B show
+B destructor
+A destructor
